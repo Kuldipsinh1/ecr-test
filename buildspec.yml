@@ -6,7 +6,7 @@ phases:
       - echo "--1 Logging in to Amazon ECR..."
       - aws --version
       - ACCOUNT_ID=724843234437
-      - REGION=ap-south-1
+      - REGION=us-east-1
       - REPOSITORY_NAME=softvan-dev-repository
       - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME
       - IMAGE_TAG=latest
