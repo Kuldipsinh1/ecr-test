@@ -8,23 +8,19 @@ phases:
       - ACCOUNT_ID=724843234437
       - REGION=us-east-1
       - REPOSITORY_NAME=softvan-dev-repository
-      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}   # ✅ define tag
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_NAME:$IMAGE_TAG .
-      - docker tag $REPOSITORY_NAME:$IMAGE_TAG $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG
-      - docker tag $REPOSITORY_NAME:$IMAGE_TAG $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest .
 
   post_build:
     commands:
-      - echo Pushing Docker images to ECR...
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG
+      - echo Pushing Docker image with tag latest...
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"my-container","imageUri":"%s"}]' $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"my-container","imageUri":"%s"}]' $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
 
 artifacts:
   files:
