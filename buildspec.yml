@@ -19,9 +19,10 @@ phases:
     commands:
       - echo Pushing Docker image with tag latest...
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
-      - echo Writing image definitions file...
-      - printf '[{"name":"my-container","imageUri":"%s"}]' $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
+      - echo Writing imagedefinitions.json file...
+      - printf '[{"name":"softvan-dev-repository","imageUri":"%s"}]' $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
+    - appspec.yml
